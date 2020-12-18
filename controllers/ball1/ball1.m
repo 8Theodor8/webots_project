@@ -63,7 +63,6 @@ while wb_robot_step(TIME_STEP) ~= -1
     wb_console_print('off ', WB_STDOUT );
 
    end
-   wb_console_print(sprintf('z : %g\n  ', z), WB_STDOUT );
 
 
 end
