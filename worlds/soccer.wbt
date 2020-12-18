@@ -4,8 +4,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.45817142014701534 -0.8740117776689276 -0.16180964821810973 5.513264120598159
-  position 0.4197429519642084 0.2373013503640999 0.44608116190124514
+  orientation 0.07916235086409897 -0.9698224503938384 -0.23060298549186284 3.7830241700113465
+  position 0.6197142990123599 0.9486424697304419 -1.0366928086445166
 }
 TexturedBackground {
   texture "stadium"
@@ -997,13 +997,13 @@ DEF player_1 Robot {
       0 0.005 0
     ]
   }
-  controller "player1_controller"
+  controller ""
   controllerArgs [
     ""
   ]
 }
 DEF player_2 Robot {
-  translation -0.346429 2.66453e-15 0.00196292
+  translation -0.346429 2.66453e-15 0
   rotation 0 -1 0 1.5708
   children [
     Group {
@@ -1390,7 +1390,7 @@ DEF player_2 Robot {
       0 0.005 0
     ]
   }
-  controller "player2_controller"
+  controller ""
   controllerArgs [
     ""
   ]
@@ -1783,7 +1783,7 @@ DEF player_3 Robot {
       0 0.005 0
     ]
   }
-  controller "player3_controller"
+  controller ""
   controllerArgs [
     ""
   ]
@@ -2176,7 +2176,7 @@ DEF player_4 Robot {
       0 0.005 0
     ]
   }
-  controller "player4_controller"
+  controller ""
   controllerArgs [
     ""
   ]
@@ -2569,13 +2569,13 @@ DEF player_5 Robot {
       0 0.005 0
     ]
   }
-  controller "player5_controller"
+  controller ""
   controllerArgs [
     ""
   ]
 }
 DEF player_6 Robot {
-  translation 0.337964 -2.22044e-16 -0.00198767
+  translation 0.337964 -2.22044e-16 0
   rotation 0 -1 0 -1.5708053071795867
   children [
     Group {
@@ -2962,24 +2962,15 @@ DEF player_6 Robot {
       0 0.005 0
     ]
   }
-  controller "player6_controller"
+  controller ""
   controllerArgs [
     ""
   ]
 }
-DEF ball Robot {
-  translation 0 0.08 0
+DEF ball1 Robot {
+  translation 0 0.05 0
   children [
-    HingeJoint {
-      jointParameters HingeJointParameters {
-      }
-      device [
-        PositionSensor {
-          name "ps1"
-        }
-      ]
-      endPoint Solid {
-      }
+    GPS {
     }
     DEF ball2 Shape {
       appearance PBRAppearance {
@@ -2995,45 +2986,10 @@ DEF ball Robot {
       }
     }
   ]
-  name "ps1"
+  name "ball1"
   boundingObject USE ball2
   physics Physics {
   }
   controller "ball1"
-}
-DEF ball Solid {
-  translation 0 0.02 0
-  children [
-    DEF FOOTBALL_SHAPE Shape {
-      appearance PBRAppearance {
-        baseColorMap ImageTexture {
-          url [
-            "textures/football_base_color.jpg"
-          ]
-        }
-        roughness 0.4
-        metalness 0
-        normalMap ImageTexture {
-          url [
-            "textures/football_normal.jpg"
-          ]
-        }
-      }
-      geometry Sphere {
-        radius 0.02
-        subdivision 3
-      }
-    }
-  ]
-  name "soccer ball"
-  model "soccer ball"
-  boundingObject USE FOOTBALL_SHAPE
-  physics Physics {
-    density -1
-    mass 0.01
-  }
-  recognitionColors [
-    1 1 1
-    0 0 0
-  ]
+  supervisor TRUE
 }

@@ -1,27 +1,70 @@
 
 TIME_STEP = 64;
 
-%gps = wb_robot_get_device('gps');
-%wb_gps_enable(gps, TIME_STEP);
+gps = wb_robot_get_device('gps');
+wb_gps_enable(gps, TIME_STEP);
+b_state = 0;
+red_score = 0;
+blue_score =0;
+ball_node = wb_supervisor_node_get_from_def('ball1');
+trans_field = wb_supervisor_node_get_field(ball_node, 'translation');
 
-%while wb_robot_step(TIME_STEP) ~= -1
-% wb_console_print('Hello!');
-% x_y_z_array = wb_gps_get_values(gps);
-%values = wb_gps_get_values(gps);
-%wb_console_print(sprintf('MY_ROBOT is at position: %g %g %g\n', values(1), values(2), values(3)), WB_STDOUT);
-%speed = wb_gps_get_speed(gps);
-
-ps1 = wb_robot_get_device('ps1');
-wb_position_sensor_enable(ps1, TIME_STEP);
+wb_console_print(' ', WB_STDOUT );
+wb_console_print(' ', WB_STDOUT );
+wb_console_print('==================================================', WB_STDOUT );
+wb_console_print(sprintf('              %g - R : B - %g\n  ', red_score, blue_score), WB_STDOUT );
+wb_console_print('==================================================', WB_STDOUT );
 
 while wb_robot_step(TIME_STEP) ~= -1
+
+ values = wb_gps_get_values(gps);
+ x = values(1);
+ y = values(2);
+ z = values(3);
+ %wb_console_print(sprintf('MY_ROBOT is at position: %g %g %g\n', x, y, z), WB_STDOUT);
+ speed = wb_gps_get_speed(gps);
  
- values = wb_position_sensor_get_value(ps1);
- wb_console_print(sprintf('MY_ROBOT is at position: %g %g %g\n', values(1), values(2), values(3)), WB_STDOUT);
- 
- 
- drawnow;
+  if (b_state == 0)
+   if(x >= 0.66 & z <= 0.1 & z >= -0.1)
+     red_score = red_score + 1;
+     wb_console_print(' ', WB_STDOUT );
+     wb_console_print(' ', WB_STDOUT );
+     wb_console_print(' ', WB_STDOUT );
+     wb_console_print(' ', WB_STDOUT );
+     wb_console_print('==================================================', WB_STDOUT );
+     wb_console_print(sprintf('              %g - R : B - %g\n  ', red_score, blue_score), WB_STDOUT );
+     wb_console_print('==================================================', WB_STDOUT );
+     b_state = 1;
+   end
+  end
+     if(x > -0.066 & x < 0.66)
+      b_state = 0;
+   end
+  if (b_state == 0)
+    if(x <= -0.66 & z <= 0.1 & z >= -0.1)
+     blue_score = blue_score + 1;
+     wb_console_print(' ', WB_STDOUT );
+     wb_console_print(' ', WB_STDOUT );
+     wb_console_print(' ', WB_STDOUT );
+     wb_console_print(' ', WB_STDOUT );
+     wb_console_print('==================================================', WB_STDOUT );
+     wb_console_print(sprintf('              %g - R : B - %g\n  ', red_score, blue_score), WB_STDOUT );
+     wb_console_print('==================================================', WB_STDOUT );
+     b_state = 1;
+     end
+   end
+   if(x < 0.066 & x > -0.66)
+      b_state = 0;
+   end
+   if(x > 0.7 || x < -0.7)
+    INITIAL = [0, 0.3, 0];
+    wb_supervisor_field_set_sf_vec3f(trans_field, INITIAL);
+    wb_supervisor_node_reset_physics(ball_node);
+    wb_console_print('off ', WB_STDOUT );
+
+   end
+   wb_console_print(sprintf('z : %g\n  ', z), WB_STDOUT );
+
 
 end
-
 
